@@ -144,7 +144,7 @@ namespace ContentManagerModels.Models
                     await WriteSpeakerInfoAsync(sw, "organization2", speaker.Organization2);
                     await WriteSpeakerInfoAsync(sw, "title", speaker.Title);
                     await WriteSpeakerInfoAsync(sw, "title2", speaker.Title2);
-                    await WriteSpeakerInfoAsync(sw, "imageUrl", speaker.ImageUrl);
+                    await WriteSpeakerInfoAsync(sw, "imageUrl", string.IsNullOrWhiteSpace(speaker.ImageUrl) ? @"/assets/images/speakers/blank_user.png" : speaker.ImageUrl);
                     await WriteSpeakerInfoAsync(sw, "profile", speaker.Profile);
                     await WriteSpeakerInfoAsync(sw, "twitter", speaker.Twitter);
                     await WriteSpeakerInfoAsync(sw, "facebook", speaker.Facebook);
