@@ -101,7 +101,7 @@ namespace ContentManagerModels.Models
         {
             using (var dbx = new ContentsDbEntities())
             {
-                return await dbx.Speaker.Where(s => s.SpeakerId < 500).OrderBy(s => s.SpeakerId).ToArrayAsync();
+                return await dbx.Speaker.Where(s => s.SpeakerId < 500).OrderBy(s => s.Order).ToArrayAsync();
             }
         }
 
@@ -164,7 +164,12 @@ namespace ContentManagerModels.Models
         }
         #endregion
 
-        private async Task<SessionGroup[]> GetSessionInfos()
+        #region タイムテーブルの出力を行います。
+        /// <summary>
+        /// タイムテーブルに表示するセッション情報の取得を行います。
+        /// </summary>
+        /// <returns></returns>
+        private async Task<SessionGroup[]> GetTimetableSessionInfos()
         {
             using (var dbx = new ContentsDbEntities())
             {
@@ -175,51 +180,52 @@ namespace ContentManagerModels.Models
             }
         }
 
-        public async Task<bool> CreateTimetableAsync(string timetablePath, string commonHeaderFilePath,
-            string timetableHeaderFilePath)
+        /// <summary>
+        /// タイムテーブルのヘッダーを出力します。
+        /// </summary>
+        /// <param name="sw"></param>
+        /// <param name="sessionGroup"></param>
+        /// <returns></returns>
+        private async Task WriteTimetableHeaderAsync(StreamWriter sw, IGrouping<string, SessionGroup> sessionGroup)
         {
-            var sessionGroups = await GetSessionInfos();
-            var commonHeader = File.ReadAllText(commonHeaderFilePath, Encoding.UTF8);
-            var timeTableHeader = File.ReadAllText(timetableHeaderFilePath);
-
-            using (var fs = new FileStream(timetablePath, FileMode.Create))
-            using (var sw = new StreamWriter(fs, Encoding.UTF8))
+            await sw.WriteLineAsync($"");
+            await sw.WriteLineAsync($"    h2 {sessionGroup.Key}");
+            await sw.WriteLineAsync($"    ul");
+            foreach (var s in sessionGroup.OrderBy(sg => sg.SessionGroupId))
             {
-                // ヘッダーの出力
-                await sw.WriteLineAsync(commonHeader);
-                foreach (var sessionGroup in sessionGroups.GroupBy(s => s.SessionGroup1))
-                {
-                    await WriteTimetableHeaderAsync(sw, sessionGroup);
-                }
-
-                // Timetableの出力
-                await sw.WriteLineAsync(timeTableHeader);
-                foreach (var sessionGroup in sessionGroups.OrderBy(sg => sg.SessionGroupId))
-                {
-                    await WriteTimetableBodyAsync(sw, sessionGroup);
-                }
-                await sw.FlushAsync();
+                await sw.WriteLineAsync($"      li ");
+                await sw.WriteLineAsync($"        a href=\"#{s.SesisonGroupFlagments}\" {s.SessionGroupName}");
             }
-            
-            return true;
         }
 
+        /// <summary>
+        /// 表示用のスピーカー名の生成を行います。
+        /// </summary>
+        /// <param name="speaker"></param>
+        /// <returns></returns>
         private string GetSpeakerName(Speaker speaker)
         {
             var speakerName = new StringBuilder();
 
-            speakerName.Append(string.IsNullOrEmpty(speaker.Organization)  ? string.Empty : speaker.Organization);
+            speakerName.Append(string.IsNullOrEmpty(speaker.Organization) ? string.Empty : speaker.Organization);
             speakerName.Append(string.IsNullOrEmpty(speaker.Organization2) ? string.Empty : speakerName.Length > 0 ? $" / {speaker.Organization2}" : speaker.Organization2);
-            speakerName.Append(string.IsNullOrEmpty(speaker.Title)         ? string.Empty : speakerName.Length > 0 ? $" / {speaker.Title}"         : speaker.Title);
-            speakerName.Append(string.IsNullOrEmpty(speaker.Title2)        ? string.Empty : speakerName.Length > 0 ? $" / {speaker.Title2}"        : speaker.Title2);
+            speakerName.Append(string.IsNullOrEmpty(speaker.Title) ? string.Empty : speakerName.Length > 0 ? $" / {speaker.Title}" : speaker.Title);
+            speakerName.Append(string.IsNullOrEmpty(speaker.Title2) ? string.Empty : speakerName.Length > 0 ? $" / {speaker.Title2}" : speaker.Title2);
 
             return speakerName.ToString();
         }
 
 
-
+        /// <summary>
+        /// タイムテーブルの本体部分の書き出しを行います。
+        /// </summary>
+        /// <param name="sw"></param>
+        /// <param name="sessionGroup"></param>
+        /// <returns></returns>
         private async Task WriteTimetableBodyAsync(StreamWriter sw, SessionGroup sessionGroup)
         {
+            await sw.WriteLineAsync($"");
+            await sw.WriteLineAsync($"");
             await sw.WriteLineAsync($"  .schedule");
             await sw.WriteLineAsync($"    h2.schedule_title#{sessionGroup.SesisonGroupFlagments} {sessionGroup.SessionGroup1} - {sessionGroup.SessionGroupName}");
             await sw.WriteLineAsync($"    .tab-content");
@@ -255,7 +261,6 @@ namespace ContentManagerModels.Models
                         await sw.WriteLineAsync($"              .scheduleTable_line_speakerIcon ");
                         await sw.WriteLineAsync($"                img src=\"..{speaker.ImageUrl}\" width=\"100\" height=\"100\" alt=\"{speakerName}\"");
                         await sw.WriteLineAsync($"              .scheduleTable_line_descriptions");
-                        await sw.WriteLineAsync($"                .scheduleTable_line_title {sg.Title}");
                         await sw.WriteLineAsync($"                .scheduleTable_line_speaker {speakerName}");
                     }
                 }
@@ -264,15 +269,42 @@ namespace ContentManagerModels.Models
 
         }
 
-        private async　Task WriteTimetableHeaderAsync(StreamWriter sw, IGrouping<string, SessionGroup> sessionGroup)
+
+        /// <summary>
+        /// タイムテーブルの出力を行います。
+        /// </summary>
+        /// <param name="timetablePath"></param>
+        /// <param name="commonHeaderFilePath"></param>
+        /// <param name="timetableHeaderFilePath"></param>
+        /// <returns></returns>
+        public async Task<bool> CreateTimetableAsync(string timetablePath, string commonHeaderFilePath,
+            string timetableHeaderFilePath)
         {
-            await sw.WriteLineAsync($"    h2 {sessionGroup.Key}");
-            await sw.WriteLineAsync($"    ul");
-            foreach (var s in sessionGroup.OrderBy(sg => sg.SessionGroupId))
+            var sessionGroups = await GetTimetableSessionInfos();
+            var commonHeader = File.ReadAllText(commonHeaderFilePath, Encoding.UTF8);
+            var timeTableHeader = File.ReadAllText(timetableHeaderFilePath);
+
+            using (var fs = new FileStream(timetablePath, FileMode.Create))
+            using (var sw = new StreamWriter(fs, Encoding.UTF8))
             {
-                await sw.WriteLineAsync($"      li ");
-                await sw.WriteLineAsync($"        a href=\"#{s.SesisonGroupFlagments}\" {s.SessionGroupName}");
+                // ヘッダーの出力
+                await sw.WriteLineAsync(commonHeader);
+                foreach (var sessionGroup in sessionGroups.GroupBy(s => s.SessionGroup1))
+                {
+                    await WriteTimetableHeaderAsync(sw, sessionGroup);
+                }
+
+                // Timetableの出力
+                await sw.WriteLineAsync(timeTableHeader);
+                foreach (var sessionGroup in sessionGroups.OrderBy(sg => sg.SessionGroupId))
+                {
+                    await WriteTimetableBodyAsync(sw, sessionGroup);
+                }
+                await sw.FlushAsync();
             }
+            
+            return true;
         }
+        #endregion
     }
 }

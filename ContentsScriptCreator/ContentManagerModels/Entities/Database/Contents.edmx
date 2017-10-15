@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ContentsDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ContentsDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Author">
           <Key>
             <PropertyRef Name="AuthorId" />
@@ -58,6 +58,7 @@
           <Property Name="Link" Type="nvarchar(max)" />
           <Property Name="email" Type="nvarchar(max)" />
           <Property Name="MSMVPExpertise" Type="nvarchar(max)" />
+          <Property Name="Order" Type="int" />
         </EntityType>
         <Association Name="FK_Author_Author">
           <End Role="Speaker" Type="Self.Speaker" Multiplicity="1" />
@@ -113,8 +114,7 @@
             <End Role="Session" EntitySet="Session" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ContentsDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -177,6 +177,7 @@
           <Property Name="email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="MSMVPExpertise" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Author" Relationship="Self.FK_Author_Author" FromRole="Speaker" ToRole="Author" />
+          <Property Name="Order" Type="Int32" />
         </EntityType>
         <Association Name="FK_Author_Author">
           <End Role="Speaker" Type="Self.Speaker" Multiplicity="1" />
@@ -279,6 +280,7 @@
           <EntitySetMapping Name="Speaker">
             <EntityTypeMapping TypeName="ContentsDbModel.Speaker">
               <MappingFragment StoreEntitySet="Speaker">
+                <ScalarProperty Name="Order" ColumnName="Order" />
                 <ScalarProperty Name="SpeakerId" ColumnName="SpeakerId" />
                 <ScalarProperty Name="SpeakerName" ColumnName="SpeakerName" />
                 <ScalarProperty Name="Organization" ColumnName="Organization" />
