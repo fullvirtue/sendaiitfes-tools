@@ -39,17 +39,22 @@ namespace ContentManagerModels.Models
             return true;
         }
 
-        private string GetSessionFilename(Session session)
-        {
-            var sessionDate = session.SessionStart.Date;
-            var sessionDay = sessionDate.Day;
-            return $"{session:yyyy-MM-dd}-session{sessionDay:D2}{session.SessionNo}.html.md";
-        }
+        /// <summary>
+        /// セッションファイル名の取得を行います。
+        /// </summary>
+        /// <param name="session"></param>
+        /// <returns></returns>
+        private string GetSessionFilename(Session session) => $"{session.SessionStart:yyyy-MM-dd}-session{session.SessionNo}.html.md";
 
+        /// <summary>
+        /// セッション情報の取得を行います。
+        /// </summary>
+        /// <param name="session"></param>
+        /// <returns></returns>
         private string GetSeesionInfo(Session session)
         {
             var title = session.Title;
-            var description = string.IsNullOrWhiteSpace(session.Abstract) ? "Comming Soon!" : session.Abstract;
+            var description = string.IsNullOrWhiteSpace(session.Abstract) ? "Comming Soon!!" : session.Abstract;
             var sessionText = new StringBuilder()
                 .AppendLine("---")
                 .AppendLine($"title: {title}")
@@ -61,9 +66,10 @@ namespace ContentManagerModels.Models
             foreach (var author in session.Author.OrderBy(a => a.Order))
             {
                 var header = authorCount == 0 ? "author"
-                    : authorCount == 1 ? "co_author"
-                        : "co_author{authorCount}";
-                sessionText.AppendLine($"{header}: {author.Speaker}");
+                           : authorCount == 1 ? "co_author"
+                           : $"co_author{authorCount}";
+                sessionText.AppendLine($"{header}: {author.Speaker.SpeakerName}");
+                authorCount++;
             }
             sessionText
                 .AppendLine("category: sessions")
@@ -85,7 +91,7 @@ namespace ContentManagerModels.Models
 
         private async Task<Session[]> GetSessionsAsync(ContentsDbEntities dbx)
         {
-            return await dbx.Session.Include("Author").Include("SessionGroup").ToArrayAsync();
+            return await dbx.Session.Where(s => string.IsNullOrEmpty(s.SessonNo3) == false).Include("Author.Speaker").Include("SessionGroup").ToArrayAsync();
         }
         #endregion
 
