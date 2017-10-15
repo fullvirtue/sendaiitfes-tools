@@ -5,6 +5,7 @@ using System.Data.Entity.Core.Mapping;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using ContentManagerModels.Entities.Database;
@@ -162,5 +163,116 @@ namespace ContentManagerModels.Models
             }
         }
         #endregion
+
+        private async Task<SessionGroup[]> GetSessionInfos()
+        {
+            using (var dbx = new ContentsDbEntities())
+            {
+                return await dbx.SessionGroup
+                    .Include("Session.Author.Speaker")
+                    .OrderBy(s => s.SessionGroupId)
+                    .ToArrayAsync();
+            }
+        }
+
+        public async Task<bool> CreateTimetableAsync(string timetablePath, string commonHeaderFilePath,
+            string timetableHeaderFilePath)
+        {
+            var sessionGroups = await GetSessionInfos();
+            var commonHeader = File.ReadAllText(commonHeaderFilePath, Encoding.UTF8);
+            var timeTableHeader = File.ReadAllText(timetableHeaderFilePath);
+
+            using (var fs = new FileStream(timetablePath, FileMode.Create))
+            using (var sw = new StreamWriter(fs, Encoding.UTF8))
+            {
+                // ヘッダーの出力
+                await sw.WriteLineAsync(commonHeader);
+                foreach (var sessionGroup in sessionGroups.GroupBy(s => s.SessionGroup1))
+                {
+                    await WriteTimetableHeaderAsync(sw, sessionGroup);
+                }
+
+                // Timetableの出力
+                await sw.WriteLineAsync(timeTableHeader);
+                foreach (var sessionGroup in sessionGroups.OrderBy(sg => sg.SessionGroupId))
+                {
+                    await WriteTimetableBodyAsync(sw, sessionGroup);
+                }
+                await sw.FlushAsync();
+            }
+            
+            return true;
+        }
+
+        private string GetSpeakerName(Speaker speaker)
+        {
+            var speakerName = new StringBuilder();
+
+            speakerName.Append(string.IsNullOrEmpty(speaker.Organization)  ? string.Empty : speaker.Organization);
+            speakerName.Append(string.IsNullOrEmpty(speaker.Organization2) ? string.Empty : speakerName.Length > 0 ? $" / {speaker.Organization2}" : speaker.Organization2);
+            speakerName.Append(string.IsNullOrEmpty(speaker.Title)         ? string.Empty : speakerName.Length > 0 ? $" / {speaker.Title}"         : speaker.Title);
+            speakerName.Append(string.IsNullOrEmpty(speaker.Title2)        ? string.Empty : speakerName.Length > 0 ? $" / {speaker.Title2}"        : speaker.Title2);
+
+            return speakerName.ToString();
+        }
+
+
+
+        private async Task WriteTimetableBodyAsync(StreamWriter sw, SessionGroup sessionGroup)
+        {
+            await sw.WriteLineAsync($"  .schedule");
+            await sw.WriteLineAsync($"    h2.schedule_title#{sessionGroup.SesisonGroupFlagments} {sessionGroup.SessionGroup1} - {sessionGroup.SessionGroupName}");
+            await sw.WriteLineAsync($"    .tab-content");
+            await sw.WriteLineAsync($"      .tab-pane.active");
+            await sw.WriteLineAsync($"        .scheduleTable");
+            foreach (var sg in sessionGroup.Session)
+            {
+                var sessionTime = sg.SessionEnd - sg.SessionStart;
+                foreach (var author in sg.Author)
+                {
+                    var speaker = author.Speaker;
+                    var speakerName = GetSpeakerName(speaker);
+                    if (author.Order == 1)
+                    {
+                        await sw.WriteLineAsync($"          .scheduleTable_line");
+                        await sw.WriteLineAsync($"            .scheduleTable_line_time ");
+                        await sw.WriteLineAsync($"              | {sg.SessionStart.Date:yyyy-MM-dd}");
+                        await sw.WriteLineAsync($"              br/");
+                        await sw.WriteLineAsync($"              | {sg.SessionStart:HH:mm} - {sg.SessionEnd:HH:mm}");
+                        await sw.WriteLineAsync($"              .scheduleTable_line_time_min {sessionTime.Minutes}min");
+                        await sw.WriteLineAsync($"            .scheduleTable_line_session");
+                        await sw.WriteLineAsync($"              .scheduleTable_line_speakerIcon ");
+                        await sw.WriteLineAsync($"                img src=\"..{speaker.ImageUrl}\" width=\"100\" height=\"100\" alt=\"{speakerName}\"");
+                        await sw.WriteLineAsync($"              .scheduleTable_line_descriptions");
+                        await sw.WriteLineAsync($"                .scheduleTable_line_title {sg.Title}");
+                        await sw.WriteLineAsync($"                .scheduleTable_line_speaker {speakerName}");
+                    }
+                    else
+                    {
+                        await sw.WriteLineAsync($"          .scheduleTable_line");
+                        await sw.WriteLineAsync($"            .scheduleTable_line_time ");
+                        await sw.WriteLineAsync($"            .scheduleTable_line_session");
+                        await sw.WriteLineAsync($"              .scheduleTable_line_speakerIcon ");
+                        await sw.WriteLineAsync($"                img src=\"..{speaker.ImageUrl}\" width=\"100\" height=\"100\" alt=\"{speakerName}\"");
+                        await sw.WriteLineAsync($"              .scheduleTable_line_descriptions");
+                        await sw.WriteLineAsync($"                .scheduleTable_line_title {sg.Title}");
+                        await sw.WriteLineAsync($"                .scheduleTable_line_speaker {speakerName}");
+                    }
+                }
+
+            }
+
+        }
+
+        private async　Task WriteTimetableHeaderAsync(StreamWriter sw, IGrouping<string, SessionGroup> sessionGroup)
+        {
+            await sw.WriteLineAsync($"    h2 {sessionGroup.Key}");
+            await sw.WriteLineAsync($"    ul");
+            foreach (var s in sessionGroup.OrderBy(sg => sg.SessionGroupId))
+            {
+                await sw.WriteLineAsync($"      li ");
+                await sw.WriteLineAsync($"        a href=\"#{s.SesisonGroupFlagments}\" {s.SessionGroupName}");
+            }
+        }
     }
 }

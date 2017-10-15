@@ -2,14 +2,20 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ContentScriptCreator.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="SpeakerYml" Type="System.String" Scope="User">
-      <Value Profile="(Default)">D:\Repos\sendaiitfes2017\data\speakers.yml.new</Value>
-    </Setting>
     <Setting Name="SessionInfoPath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">D:\Repos\sendaiitfes2017\source\sessions\items\new</Value>
+      <Value Profile="(Default)">D:\Repos\sendaiitfes2017\source\sessions\items</Value>
     </Setting>
     <Setting Name="TimetablePath" Type="System.String" Scope="User">
       <Value Profile="(Default)">D:\Repos\sendaiitfes2017\source\schedule\index.html.slim.new</Value>
+    </Setting>
+    <Setting Name="SpeakerYml" Type="System.String" Scope="User">
+      <Value Profile="(Default)">D:\Repos\sendaiitfes2017\data\speakers.yml</Value>
+    </Setting>
+    <Setting Name="TimeTableCommonHeaderFilename" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.\CommonHeader.html.slim</Value>
+    </Setting>
+    <Setting Name="TimeTableHeaderFilename" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.\TimeTableHeader.html.slim</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -25,19 +25,7 @@ namespace ContentScriptCreator.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D:\\Repos\\sendaiitfes2017\\data\\speakers.yml.new")]
-        public string SpeakerYml {
-            get {
-                return ((string)(this["SpeakerYml"]));
-            }
-            set {
-                this["SpeakerYml"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D:\\Repos\\sendaiitfes2017\\source\\sessions\\items\\new")]
+        [global::System.Configuration.DefaultSettingValueAttribute("D:\\Repos\\sendaiitfes2017\\source\\sessions\\items")]
         public string SessionInfoPath {
             get {
                 return ((string)(this["SessionInfoPath"]));
@@ -56,6 +44,42 @@ namespace ContentScriptCreator.Properties {
             }
             set {
                 this["TimetablePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("D:\\Repos\\sendaiitfes2017\\data\\speakers.yml")]
+        public string SpeakerYml {
+            get {
+                return ((string)(this["SpeakerYml"]));
+            }
+            set {
+                this["SpeakerYml"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".\\CommonHeader.html.slim")]
+        public string TimeTableCommonHeaderFilename {
+            get {
+                return ((string)(this["TimeTableCommonHeaderFilename"]));
+            }
+            set {
+                this["TimeTableCommonHeaderFilename"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".\\TimeTableHeader.html.slim")]
+        public string TimeTableHeaderFilename {
+            get {
+                return ((string)(this["TimeTableHeaderFilename"]));
+            }
+            set {
+                this["TimeTableHeaderFilename"] = value;
             }
         }
     }
