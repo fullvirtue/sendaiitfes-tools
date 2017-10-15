@@ -27,6 +27,7 @@ namespace ContentManagerModels.Models
             }
             Directory.CreateDirectory(sessionsDirectory);
 
+            
             using (var dbx = new ContentsDbEntities())
             {
                 var sessions = await GetSessionsAsync(dbx);
@@ -93,7 +94,7 @@ namespace ContentManagerModels.Models
         {
             using (var dbx = new ContentsDbEntities())
             {
-                return await dbx.Speaker.OrderBy(s => s.SpeakerId).ToArrayAsync();
+                return await dbx.Speaker.Where(s => s.SpeakerId < 500).OrderBy(s => s.SpeakerId).ToArrayAsync();
             }
         }
 
@@ -102,7 +103,7 @@ namespace ContentManagerModels.Models
         /// </summary>
         /// <param name="path">出力先スピーカー情報ファイルパス(speakers.yml)</param>
         /// <returns></returns>
-        public async Task<bool> CreateSpekaersAsync(string path)
+        public async Task<bool> CreateSpeakersAsync(string path)
         {
             try
             {
@@ -144,13 +145,12 @@ namespace ContentManagerModels.Models
                     await WriteSpeakerInfoAsync(sw, "organization2", speaker.Organization2);
                     await WriteSpeakerInfoAsync(sw, "title", speaker.Title);
                     await WriteSpeakerInfoAsync(sw, "title2", speaker.Title2);
-                    await WriteSpeakerInfoAsync(sw, "imageUrl", string.IsNullOrWhiteSpace(speaker.ImageUrl) ? @"/assets/images/speakers/blank_user.png" : speaker.ImageUrl);
-                    await WriteSpeakerInfoAsync(sw, "profile", speaker.Profile);
+                    await WriteSpeakerInfoAsync(sw, "profile_image_url", string.IsNullOrWhiteSpace(speaker.ImageUrl) ? @"/assets/images/speakers/blank_user.png" : speaker.ImageUrl);
+                    await WriteSpeakerInfoAsync(sw, "profile",$"\"{speaker.Profile}\"" );
                     await WriteSpeakerInfoAsync(sw, "twitter", speaker.Twitter);
                     await WriteSpeakerInfoAsync(sw, "facebook", speaker.Facebook);
                     await WriteSpeakerInfoAsync(sw, "github", speaker.Github);
                     await WriteSpeakerInfoAsync(sw, "link", speaker.Link);
-                    await WriteSpeakerInfoAsync(sw, "email", speaker.email);
                     await WriteSpeakerInfoAsync(sw, "microsoftmvpcategoly", speaker.MSMVPExpertise);
                 }
             }

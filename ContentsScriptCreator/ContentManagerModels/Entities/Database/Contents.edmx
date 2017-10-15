@@ -9,7 +9,7 @@
           <Key>
             <PropertyRef Name="AuthorId" />
           </Key>
-          <Property Name="AuthorId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AuthorId" Type="int" Nullable="false" />
           <Property Name="SessionId" Type="int" Nullable="false" />
           <Property Name="SpeakerId" Type="int" Nullable="false" />
           <Property Name="Order" Type="int" Nullable="false" />
@@ -18,8 +18,11 @@
           <Key>
             <PropertyRef Name="SessionId" />
           </Key>
-          <Property Name="SessionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SessionId" Type="int" Nullable="false" />
           <Property Name="SessionNo" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="SessionNo1" Type="nchar" MaxLength="2" Nullable="false" />
+          <Property Name="SessionNo2" Type="nchar" MaxLength="3" Nullable="false" />
+          <Property Name="SessonNo3" Type="nchar" MaxLength="2" />
           <Property Name="Room" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="SessionStart" Type="datetime" Nullable="false" />
           <Property Name="SessionEnd" Type="datetime" Nullable="false" />
@@ -32,7 +35,7 @@
           <Key>
             <PropertyRef Name="SessionGroupId" />
           </Key>
-          <Property Name="SessionGroupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SessionGroupId" Type="int" Nullable="false" />
           <Property Name="SessionGroup" Type="nvarchar(max)" Nullable="false" />
           <Property Name="SessionGroupName" Type="nvarchar(max)" Nullable="false" />
           <Property Name="SesisonGroupFlagments" Type="nvarchar(max)" Nullable="false" />
@@ -41,7 +44,7 @@
           <Key>
             <PropertyRef Name="SpeakerId" />
           </Key>
-          <Property Name="SpeakerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SpeakerId" Type="int" Nullable="false" />
           <Property Name="SpeakerName" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Organization" Type="nvarchar(max)" />
           <Property Name="Organization2" Type="nvarchar(max)" />
@@ -119,7 +122,7 @@
           <Key>
             <PropertyRef Name="AuthorId" />
           </Key>
-          <Property Name="AuthorId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AuthorId" Type="Int32" Nullable="false" />
           <Property Name="SessionId" Type="Int32" Nullable="false" />
           <Property Name="SpeakerId" Type="Int32" Nullable="false" />
           <Property Name="Order" Type="Int32" Nullable="false" />
@@ -130,8 +133,11 @@
           <Key>
             <PropertyRef Name="SessionId" />
           </Key>
-          <Property Name="SessionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SessionId" Type="Int32" Nullable="false" />
           <Property Name="SessionNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SessionNo1" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="SessionNo2" Type="String" MaxLength="3" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="SessonNo3" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
           <Property Name="Room" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="SessionStart" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="SessionEnd" Type="DateTime" Nullable="false" Precision="3" />
@@ -146,7 +152,7 @@
           <Key>
             <PropertyRef Name="SessionGroupId" />
           </Key>
-          <Property Name="SessionGroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SessionGroupId" Type="Int32" Nullable="false" />
           <Property Name="SessionGroup1" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="SessionGroupName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="SesisonGroupFlagments" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
@@ -156,7 +162,7 @@
           <Key>
             <PropertyRef Name="SpeakerId" />
           </Key>
-          <Property Name="SpeakerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SpeakerId" Type="Int32" Nullable="false" />
           <Property Name="SpeakerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Organization" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Organization2" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -247,6 +253,9 @@
               <MappingFragment StoreEntitySet="Session">
                 <ScalarProperty Name="SessionId" ColumnName="SessionId" />
                 <ScalarProperty Name="SessionNo" ColumnName="SessionNo" />
+                <ScalarProperty Name="SessionNo1" ColumnName="SessionNo1" />
+                <ScalarProperty Name="SessionNo2" ColumnName="SessionNo2" />
+                <ScalarProperty Name="SessonNo3" ColumnName="SessonNo3" />
                 <ScalarProperty Name="Room" ColumnName="Room" />
                 <ScalarProperty Name="SessionStart" ColumnName="SessionStart" />
                 <ScalarProperty Name="SessionEnd" ColumnName="SessionEnd" />

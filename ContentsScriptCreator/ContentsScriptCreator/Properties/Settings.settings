@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="ContentScriptCreator.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="SpeakerYml" Type="System.String" Scope="User">
+      <Value Profile="(Default)">D:\Repos\sendaiitfes2017\data\speakers.yml.new</Value>
+    </Setting>
+    <Setting Name="SessionInfoPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">D:\Repos\sendaiitfes2017\source\sessions\items\new</Value>
+    </Setting>
+    <Setting Name="TimetablePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">D:\Repos\sendaiitfes2017\source\schedule\index.html.slim.new</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
