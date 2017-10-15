@@ -45,7 +45,7 @@ namespace ContentManagerModels.Models
         /// </summary>
         /// <param name="session"></param>
         /// <returns></returns>
-        private string GetSessionFilename(Session session) => $"{session.SessionStart:yyyy-MM-dd}-session{session.SessionNo}.html.md";
+        private string GetSessionFilename(Session session) => $"{session.SessionStart.AddMonths(-1):yyyy-MM-dd}-session{session.SessionNo}.html.md";
 
         /// <summary>
         /// セッション情報の取得を行います。
@@ -69,7 +69,7 @@ namespace ContentManagerModels.Models
                 var header = authorCount == 0 ? "author"
                            : authorCount == 1 ? "co_author"
                            : $"co_author{authorCount}";
-                sessionText.AppendLine($"{header}: {author.Speaker.SpeakerName}");
+                sessionText.AppendLine($"{header}: \"{author.Speaker.SpeakerName}\"");
                 authorCount++;
             }
             sessionText
@@ -188,7 +188,6 @@ namespace ContentManagerModels.Models
         /// <returns></returns>
         private async Task WriteTimetableHeaderAsync(StreamWriter sw, IGrouping<string, SessionGroup> sessionGroup)
         {
-            await sw.WriteLineAsync($"");
             await sw.WriteLineAsync($"    h2 {sessionGroup.Key}");
             await sw.WriteLineAsync($"    ul");
             foreach (var s in sessionGroup.OrderBy(sg => sg.SessionGroupId))
@@ -211,6 +210,7 @@ namespace ContentManagerModels.Models
             speakerName.Append(string.IsNullOrEmpty(speaker.Organization2) ? string.Empty : speakerName.Length > 0 ? $" / {speaker.Organization2}" : speaker.Organization2);
             speakerName.Append(string.IsNullOrEmpty(speaker.Title) ? string.Empty : speakerName.Length > 0 ? $" / {speaker.Title}" : speaker.Title);
             speakerName.Append(string.IsNullOrEmpty(speaker.Title2) ? string.Empty : speakerName.Length > 0 ? $" / {speaker.Title2}" : speaker.Title2);
+            speakerName.Append(string.IsNullOrEmpty(speaker.SpeakerName) ? string.Empty : speakerName.Length > 0 ? $" {speaker.SpeakerName}" : speaker.SpeakerName);
 
             return speakerName.ToString();
         }
