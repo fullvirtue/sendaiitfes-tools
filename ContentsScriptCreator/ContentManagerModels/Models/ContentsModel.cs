@@ -48,6 +48,7 @@ namespace ContentManagerModels.Models
         /// <param name="session"></param>
         /// <returns></returns>
         private string GetSessionFilename(Session session) => $"{session.SessionStart.AddMonths(-1):yyyy-MM-dd}-session{session.SessionNo}.html.md";
+        // D:\Repos\sendaiitfes2017\source\sessions\items\2017-09-29-session29-212-2.html.md
 
         /// <summary>
         /// セッション情報の取得を行います。
@@ -62,8 +63,8 @@ namespace ContentManagerModels.Models
                 .AppendLine("---")
                 .AppendLine($"title: {title}")
                 .AppendLine($"description: \"{title}\"")
-                .AppendLine($"date: {session.SessionStart.AddMonths(-1):yyyy-MM-dd HH:mm}")
-                .AppendLine($"sessionlevel: {session.SessionLevel}");
+                .AppendLine($"date: {session.SessionStart.AddMonths(-1):yyyy-MM-dd HH:mm}");
+                //.AppendLine($"sessionlevel: {session.SessionLevel}");
 
             var authorCount = 0;
             foreach (var author in session.Author.OrderBy(a => a.Order))
@@ -248,7 +249,7 @@ namespace ContentManagerModels.Models
                             : $"../sessions/{sg.SessionStart.AddMonths(-1):yyyy/MM/dd}/session{sg.SessionNo}/";
                         var sessionUrl = string.IsNullOrEmpty(sessionLink)
                             ? string.Empty
-                            : $"a href=\"{sessionLink}\"　[{sg.SessionNo}] ";
+                            : $"a href=\"{sessionLink}\" [{sg.SessionNo}]";
 
                         await sw.WriteLineAsync($"          .scheduleTable_line");
                         await sw.WriteLineAsync($"            .scheduleTable_line_time ");
@@ -260,7 +261,8 @@ namespace ContentManagerModels.Models
                         await sw.WriteLineAsync($"              .scheduleTable_line_speakerIcon ");
                         await sw.WriteLineAsync($"                img src=\"..{speaker.ImageUrl}\" width=\"100\" height=\"100\" alt=\"{speakerName}\"");
                         await sw.WriteLineAsync($"              .scheduleTable_line_descriptions");
-                        await sw.WriteLineAsync($"                .scheduleTable_line_title {sessionUrl} {sg.Title}");
+                        await sw.WriteLineAsync($"                .scheduleTable_line_title ");
+                        await sw.WriteLineAsync($"                  {sessionUrl}{sg.Title}");
                         await sw.WriteLineAsync($"                .scheduleTable_line_speaker {speakerName}");
                     }
                     else
