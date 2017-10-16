@@ -63,8 +63,8 @@ namespace ContentManagerModels.Models
                 .AppendLine("---")
                 .AppendLine($"title: {title}")
                 .AppendLine($"description: \"{title}\"")
-                .AppendLine($"date: {session.SessionStart.AddMonths(-1):yyyy-MM-dd HH:mm}");
-                //.AppendLine($"sessionlevel: {session.SessionLevel}");
+                .AppendLine($"date: {session.SessionStart.AddMonths(-1):yyyy-MM-dd HH:mm}")
+                .AppendLine($"sessionlevel: {session.SessionLevel}");
 
             var authorCount = 0;
             foreach (var author in session.Author.OrderBy(a => a.Order))
