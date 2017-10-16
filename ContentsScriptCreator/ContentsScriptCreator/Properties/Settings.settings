@@ -6,7 +6,7 @@
       <Value Profile="(Default)">D:\Repos\sendaiitfes2017\source\sessions\items</Value>
     </Setting>
     <Setting Name="TimetablePath" Type="System.String" Scope="User">
-      <Value Profile="(Default)">D:\Repos\sendaiitfes2017\source\schedule\index.html.slim.new</Value>
+      <Value Profile="(Default)">D:\Repos\sendaiitfes2017\source\schedule\index.html.slim</Value>
     </Setting>
     <Setting Name="SpeakerYml" Type="System.String" Scope="User">
       <Value Profile="(Default)">D:\Repos\sendaiitfes2017\data\speakers.yml</Value>

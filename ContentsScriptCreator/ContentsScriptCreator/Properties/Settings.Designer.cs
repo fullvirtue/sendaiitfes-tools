@@ -37,7 +37,7 @@ namespace ContentScriptCreator.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D:\\Repos\\sendaiitfes2017\\source\\schedule\\index.html.slim.new")]
+        [global::System.Configuration.DefaultSettingValueAttribute("D:\\Repos\\sendaiitfes2017\\source\\schedule\\index.html.slim")]
         public string TimetablePath {
             get {
                 return ((string)(this["TimetablePath"]));

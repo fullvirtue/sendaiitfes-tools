@@ -260,7 +260,7 @@ namespace ContentManagerModels.Models
                         await sw.WriteLineAsync($"              .scheduleTable_line_speakerIcon ");
                         await sw.WriteLineAsync($"                img src=\"..{speaker.ImageUrl}\" width=\"100\" height=\"100\" alt=\"{speakerName}\"");
                         await sw.WriteLineAsync($"              .scheduleTable_line_descriptions");
-                        await sw.WriteLineAsync($"                .scheduleTable_line_title {sessionUrl}{sg.Title}");
+                        await sw.WriteLineAsync($"                .scheduleTable_line_title {sessionUrl} {sg.Title}");
                         await sw.WriteLineAsync($"                .scheduleTable_line_speaker {speakerName}");
                     }
                     else
