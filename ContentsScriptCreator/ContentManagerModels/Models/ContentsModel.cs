@@ -14,6 +14,9 @@ namespace ContentManagerModels.Models
 {
     public class ContentsModel
     {
+        /// <summary>
+        /// ファイル出力で使用するEncoding
+        /// </summary>
         private UTF8Encoding utf8Encoding = new UTF8Encoding(false);
 
         #region Session.mdの生成を行います。
@@ -51,6 +54,27 @@ namespace ContentManagerModels.Models
         // D:\Repos\sendaiitfes2017\source\sessions\items\2017-09-29-session29-212-2.html.md
 
         /// <summary>
+        /// セッションスピーカー名の取得を行います。
+        /// </summary>
+        /// <remarks>セッションスピーカーの人数は可変かつ項目名が人数により異なるため、人数に合わせて項目出力を行います。</remarks>
+        /// <param name="session"></param>
+        /// <returns></returns>
+        private string GetAuthors(Session session)
+        {
+            var authorText = new StringBuilder();
+            var authorCount = 0;
+            foreach (var author in session.Author.OrderBy(a => a.Order))
+            {
+                var header = authorCount == 0 ? "author"
+                           : authorCount == 1 ? "co_author"
+                           : $"co_author{authorCount}";
+                authorText.AppendLine($"{header}: \"{author.Speaker.SpeakerName}\"");
+                authorCount++;
+            }
+            return authorText.ToString();
+        }
+
+        /// <summary>
         /// セッション情報の取得を行います。
         /// </summary>
         /// <param name="session"></param>
@@ -64,18 +88,8 @@ namespace ContentManagerModels.Models
                 .AppendLine($"title: {title}")
                 .AppendLine($"description: \"{title}\"")
                 .AppendLine($"date: {session.SessionStart.AddMonths(-1):yyyy-MM-dd HH:mm}")
-                .AppendLine($"sessionlevel: {session.SessionLevel}");
-
-            var authorCount = 0;
-            foreach (var author in session.Author.OrderBy(a => a.Order))
-            {
-                var header = authorCount == 0 ? "author"
-                           : authorCount == 1 ? "co_author"
-                           : $"co_author{authorCount}";
-                sessionText.AppendLine($"{header}: \"{author.Speaker.SpeakerName}\"");
-                authorCount++;
-            }
-            sessionText
+                .AppendLine($"sessionlevel: {session.SessionLevel}")
+                .Append(GetAuthors(session))
                 .AppendLine("category: sessions")
                 .AppendLine("---")
                 .AppendLine($"{description}");
@@ -83,9 +97,15 @@ namespace ContentManagerModels.Models
             return sessionText.ToString();
         }
 
-        private async Task CreateSessionFileAsync(string sessionsDirectory, Session session)
+        /// <summary>
+        /// セッションファイルの作成を行います。
+        /// </summary>
+        /// <param name="sessionsDirectoryPath">セッションファイルの出力先ディレクトリーパス</param>
+        /// <param name="session">出力するセッション情報</param>
+        /// <returns></returns>
+        private async Task CreateSessionFileAsync(string sessionsDirectoryPath, Session session)
         {
-            var path = Path.Combine(sessionsDirectory, GetSessionFilename(session));
+            var path = Path.Combine(sessionsDirectoryPath, GetSessionFilename(session));
             using (var fs = new FileStream(path, FileMode.Create))
             using (var sw = new StreamWriter(fs, utf8Encoding))
             {
@@ -93,9 +113,18 @@ namespace ContentManagerModels.Models
             }
         }
 
+        /// <summary>
+        /// データベースからセッション情報の取得を行います。
+        /// </summary>
+        /// <param name="dbx"></param>
+        /// <returns></returns>
         private async Task<Session[]> GetSessionsAsync(ContentsDbEntities dbx)
         {
-            return await dbx.Session.Where(s => string.IsNullOrEmpty(s.SessionNo3) == false).Include("Author.Speaker").Include("SessionGroup").ToArrayAsync();
+            return await dbx.Session
+                .Where(s => string.IsNullOrEmpty(s.SessionNo3) == false)
+                .Include("Author.Speaker")
+                .Include("SessionGroup")
+                .ToArrayAsync();
         }
         #endregion
 
@@ -243,11 +272,12 @@ namespace ContentManagerModels.Models
                     var speakerName = GetSpeakerName(speaker);
                     if (author.Order == 1)
                     {
-                        
+                        // セッション情報へのリンク先                        
                         var sessionLink = string.IsNullOrEmpty(sg.SessionNo3) 
                             ? String.Empty 
                             : $"../sessions/{sg.SessionStart.AddMonths(-1):yyyy/MM/dd}/session{sg.SessionNo}/";
-                        var sessionUrl = string.IsNullOrEmpty(sessionLink)
+                        // セッション情報のaタグ
+                        var sessionUrlAnchorTag = string.IsNullOrEmpty(sessionLink)
                             ? string.Empty
                             : $"a href=\"{sessionLink}\" [{sg.SessionNo}]";
 
@@ -262,7 +292,7 @@ namespace ContentManagerModels.Models
                         await sw.WriteLineAsync($"                img src=\"..{speaker.ImageUrl}\" width=\"100\" height=\"100\" alt=\"{speakerName}\"");
                         await sw.WriteLineAsync($"              .scheduleTable_line_descriptions");
                         await sw.WriteLineAsync($"                .scheduleTable_line_title ");
-                        await sw.WriteLineAsync($"                  {sessionUrl}{sg.Title}");
+                        await sw.WriteLineAsync($"                  {sessionUrlAnchorTag}{sg.Title}");
                         await sw.WriteLineAsync($"                .scheduleTable_line_speaker {speakerName}");
                     }
                     else
