@@ -14,6 +14,8 @@ namespace ContentManagerModels.Models
 {
     public class ContentsModel
     {
+        private UTF8Encoding utf8Encoding = new UTF8Encoding(false);
+
         #region Session.mdの生成を行います。
         /// <summary>
         /// Session.mdの生成を行います。
@@ -60,7 +62,7 @@ namespace ContentManagerModels.Models
                 .AppendLine("---")
                 .AppendLine($"title: {title}")
                 .AppendLine($"description: \"{title}\"")
-                .AppendLine($"date: {session.SessionStart:yyyy-MM-dd HH:mm}")
+                .AppendLine($"date: {session.SessionStart.AddMonths(-1):yyyy-MM-dd HH:mm}")
                 .AppendLine($"sessionlevel: {session.SessionLevel}");
 
             var authorCount = 0;
@@ -84,7 +86,7 @@ namespace ContentManagerModels.Models
         {
             var path = Path.Combine(sessionsDirectory, GetSessionFilename(session));
             using (var fs = new FileStream(path, FileMode.Create))
-            using (var sw = new StreamWriter(fs, Encoding.UTF8))
+            using (var sw = new StreamWriter(fs, utf8Encoding))
             {
                 await sw.WriteAsync(GetSeesionInfo(session));
             }
@@ -92,7 +94,7 @@ namespace ContentManagerModels.Models
 
         private async Task<Session[]> GetSessionsAsync(ContentsDbEntities dbx)
         {
-            return await dbx.Session.Where(s => string.IsNullOrEmpty(s.SessonNo3) == false).Include("Author.Speaker").Include("SessionGroup").ToArrayAsync();
+            return await dbx.Session.Where(s => string.IsNullOrEmpty(s.SessionNo3) == false).Include("Author.Speaker").Include("SessionGroup").ToArrayAsync();
         }
         #endregion
 
@@ -142,7 +144,7 @@ namespace ContentManagerModels.Models
         private async Task WriteSpeakersAsync(string path, Speaker[] speakers)
         {
             using (var fs = new FileStream(path, FileMode.Create))
-            using (var sw = new StreamWriter(fs, Encoding.UTF8))
+            using (var sw = new StreamWriter(fs, utf8Encoding))
             {
                 await sw.WriteLineAsync("normals:");
                 foreach (var speaker in speakers)
@@ -241,7 +243,7 @@ namespace ContentManagerModels.Models
                     if (author.Order == 1)
                     {
                         
-                        var sessionLink = string.IsNullOrEmpty(sg.SessonNo3) 
+                        var sessionLink = string.IsNullOrEmpty(sg.SessionNo3) 
                             ? String.Empty 
                             : $"../sessions/{sg.SessionStart.AddMonths(-1):yyyy/MM/dd}/session{sg.SessionNo}/";
                         var sessionUrl = string.IsNullOrEmpty(sessionLink)
@@ -289,21 +291,21 @@ namespace ContentManagerModels.Models
             string timetableHeaderFilePath)
         {
             var sessionGroups = await GetTimetableSessionInfos();
-            var commonHeader = File.ReadAllText(commonHeaderFilePath, Encoding.UTF8);
+            var commonHeader = File.ReadAllText(commonHeaderFilePath, utf8Encoding);
             var timeTableHeader = File.ReadAllText(timetableHeaderFilePath);
 
             using (var fs = new FileStream(timetablePath, FileMode.Create))
-            using (var sw = new StreamWriter(fs, Encoding.UTF8))
+            using (var sw = new StreamWriter(fs, utf8Encoding))
             {
                 // ヘッダーの出力
-                await sw.WriteLineAsync(commonHeader);
+                await sw.WriteLineAsync(commonHeader + "");
                 foreach (var sessionGroup in sessionGroups.GroupBy(s => s.SessionGroup1))
                 {
                     await WriteTimetableHeaderAsync(sw, sessionGroup);
                 }
 
                 // Timetableの出力
-                await sw.WriteLineAsync(timeTableHeader);
+                await sw.WriteLineAsync(timeTableHeader + "");
                 foreach (var sessionGroup in sessionGroups.OrderBy(sg => sg.SessionGroupId))
                 {
                     await WriteTimetableBodyAsync(sw, sessionGroup);

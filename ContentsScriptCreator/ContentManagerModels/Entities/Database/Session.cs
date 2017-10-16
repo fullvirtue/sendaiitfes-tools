@@ -24,7 +24,7 @@ namespace ContentManagerModels.Entities.Database
         public string SessionNo { get; set; }
         public string SessionNo1 { get; set; }
         public string SessionNo2 { get; set; }
-        public string SessonNo3 { get; set; }
+        public string SessionNo3 { get; set; }
         public string Room { get; set; }
         public System.DateTime SessionStart { get; set; }
         public System.DateTime SessionEnd { get; set; }

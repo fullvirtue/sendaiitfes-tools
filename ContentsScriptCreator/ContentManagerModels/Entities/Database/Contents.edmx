@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ContentsDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="ContentsDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Author">
           <Key>
             <PropertyRef Name="AuthorId" />
@@ -22,7 +22,7 @@
           <Property Name="SessionNo" Type="nvarchar" MaxLength="10" Nullable="false" />
           <Property Name="SessionNo1" Type="nchar" MaxLength="2" Nullable="false" />
           <Property Name="SessionNo2" Type="nchar" MaxLength="3" Nullable="false" />
-          <Property Name="SessonNo3" Type="nchar" MaxLength="2" />
+          <Property Name="SessionNo3" Type="nchar" MaxLength="2" />
           <Property Name="Room" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="SessionStart" Type="datetime" Nullable="false" />
           <Property Name="SessionEnd" Type="datetime" Nullable="false" />
@@ -114,7 +114,8 @@
             <End Role="Session" EntitySet="Session" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ContentsDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -137,7 +138,7 @@
           <Property Name="SessionNo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="SessionNo1" Type="String" MaxLength="2" FixedLength="true" Unicode="true" Nullable="false" />
           <Property Name="SessionNo2" Type="String" MaxLength="3" FixedLength="true" Unicode="true" Nullable="false" />
-          <Property Name="SessonNo3" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
+          <Property Name="SessionNo3" Type="String" MaxLength="2" FixedLength="true" Unicode="true" />
           <Property Name="Room" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="SessionStart" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="SessionEnd" Type="DateTime" Nullable="false" Precision="3" />
@@ -176,8 +177,8 @@
           <Property Name="Link" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="MSMVPExpertise" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Author" Relationship="Self.FK_Author_Author" FromRole="Speaker" ToRole="Author" />
           <Property Name="Order" Type="Int32" />
+          <NavigationProperty Name="Author" Relationship="Self.FK_Author_Author" FromRole="Speaker" ToRole="Author" />
         </EntityType>
         <Association Name="FK_Author_Author">
           <End Role="Speaker" Type="Self.Speaker" Multiplicity="1" />
@@ -256,7 +257,7 @@
                 <ScalarProperty Name="SessionNo" ColumnName="SessionNo" />
                 <ScalarProperty Name="SessionNo1" ColumnName="SessionNo1" />
                 <ScalarProperty Name="SessionNo2" ColumnName="SessionNo2" />
-                <ScalarProperty Name="SessonNo3" ColumnName="SessonNo3" />
+                <ScalarProperty Name="SessionNo3" ColumnName="SessionNo3" />
                 <ScalarProperty Name="Room" ColumnName="Room" />
                 <ScalarProperty Name="SessionStart" ColumnName="SessionStart" />
                 <ScalarProperty Name="SessionEnd" ColumnName="SessionEnd" />
@@ -280,7 +281,6 @@
           <EntitySetMapping Name="Speaker">
             <EntityTypeMapping TypeName="ContentsDbModel.Speaker">
               <MappingFragment StoreEntitySet="Speaker">
-                <ScalarProperty Name="Order" ColumnName="Order" />
                 <ScalarProperty Name="SpeakerId" ColumnName="SpeakerId" />
                 <ScalarProperty Name="SpeakerName" ColumnName="SpeakerName" />
                 <ScalarProperty Name="Organization" ColumnName="Organization" />
@@ -295,6 +295,7 @@
                 <ScalarProperty Name="Link" ColumnName="Link" />
                 <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="MSMVPExpertise" ColumnName="MSMVPExpertise" />
+                <ScalarProperty Name="Order" ColumnName="Order" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
