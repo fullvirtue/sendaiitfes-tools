@@ -278,7 +278,7 @@ namespace ContentManagerModels.Models
                             : $"../sessions/{sg.SessionStart.AddMonths(-1):yyyy/MM/dd}/session{sg.SessionNo}/";
                         // セッション情報のaタグ
                         var sessionUrlAnchorTag = string.IsNullOrEmpty(sessionLink)
-                            ? string.Empty
+                            ? "|"
                             : $"a href=\"{sessionLink}\" [{sg.SessionNo}]";
 
                         await sw.WriteLineAsync($"          .scheduleTable_line");
