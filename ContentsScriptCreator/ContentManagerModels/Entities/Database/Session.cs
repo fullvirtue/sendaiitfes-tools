@@ -32,6 +32,7 @@ namespace ContentManagerModels.Entities.Database
         public string Title { get; set; }
         public string Abstract { get; set; }
         public int SessionLevel { get; set; }
+        public Nullable<int> TimetableOrder { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Author> Author { get; set; }

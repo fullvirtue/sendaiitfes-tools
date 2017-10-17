@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ContentsDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="ContentsDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Author">
           <Key>
             <PropertyRef Name="AuthorId" />
@@ -30,6 +30,7 @@
           <Property Name="Title" Type="nvarchar(max)" Nullable="false" />
           <Property Name="Abstract" Type="nvarchar(max)" />
           <Property Name="SessionLevel" Type="int" Nullable="false" />
+          <Property Name="TimetableOrder" Type="int" />
         </EntityType>
         <EntityType Name="SessionGroup">
           <Key>
@@ -114,8 +115,7 @@
             <End Role="Session" EntitySet="Session" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ContentsDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -148,6 +148,7 @@
           <Property Name="SessionLevel" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Author" Relationship="Self.FK_Author_Session" FromRole="Session" ToRole="Author" />
           <NavigationProperty Name="SessionGroup" Relationship="Self.FK_Session_Session" FromRole="Session" ToRole="SessionGroup" />
+          <Property Name="TimetableOrder" Type="Int32" />
         </EntityType>
         <EntityType Name="SessionGroup">
           <Key>
@@ -253,6 +254,7 @@
           <EntitySetMapping Name="Session">
             <EntityTypeMapping TypeName="ContentsDbModel.Session">
               <MappingFragment StoreEntitySet="Session">
+                <ScalarProperty Name="TimetableOrder" ColumnName="TimetableOrder" />
                 <ScalarProperty Name="SessionId" ColumnName="SessionId" />
                 <ScalarProperty Name="SessionNo" ColumnName="SessionNo" />
                 <ScalarProperty Name="SessionNo1" ColumnName="SessionNo1" />

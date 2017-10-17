@@ -263,7 +263,7 @@ namespace ContentManagerModels.Models
             await sw.WriteLineAsync($"    .tab-content");
             await sw.WriteLineAsync($"      .tab-pane.active");
             await sw.WriteLineAsync($"        .scheduleTable");
-            foreach (var sg in sessionGroup.Session)
+            foreach (var sg in sessionGroup.Session.OrderBy(s => s.TimetableOrder))
             {
                 var sessionTime = sg.SessionEnd - sg.SessionStart;
                 foreach (var author in sg.Author)
