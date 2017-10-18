@@ -280,7 +280,7 @@ namespace ContentManagerModels.Models
                         var sessionUrlAnchorTag = string.IsNullOrEmpty(sessionLink)
                             ? "|"
                             : $"a href=\"{sessionLink}\" [{sg.SessionNo}]";
-
+                        var speakerImageUrl = string.IsNullOrWhiteSpace(speaker.ImageUrl) ? "/assets/images/speakers/blank_user.png" : speaker.ImageUrl;
                         await sw.WriteLineAsync($"          .scheduleTable_line");
                         await sw.WriteLineAsync($"            .scheduleTable_line_time ");
                         await sw.WriteLineAsync($"              | {sg.SessionStart.Date:yyyy-MM-dd}");
@@ -289,7 +289,7 @@ namespace ContentManagerModels.Models
                         await sw.WriteLineAsync($"              .scheduleTable_line_time_min {sessionTime.Minutes}min");
                         await sw.WriteLineAsync($"            .scheduleTable_line_session");
                         await sw.WriteLineAsync($"              .scheduleTable_line_speakerIcon ");
-                        await sw.WriteLineAsync($"                img src=\"..{speaker.ImageUrl}\" width=\"100\" height=\"100\" alt=\"{speakerName}\"");
+                        await sw.WriteLineAsync($"                img src=\"..{speakerImageUrl}\" width=\"100\" height=\"100\" alt=\"{speakerName}\"");
                         await sw.WriteLineAsync($"              .scheduleTable_line_descriptions");
                         await sw.WriteLineAsync($"                .scheduleTable_line_title ");
                         await sw.WriteLineAsync($"                  {sessionUrlAnchorTag}{sg.Title}");
