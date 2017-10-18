@@ -280,7 +280,9 @@ namespace ContentManagerModels.Models
                         var sessionUrlAnchorTag = string.IsNullOrEmpty(sessionLink)
                             ? "|"
                             : $"a href=\"{sessionLink}\" [{sg.SessionNo}]";
-                        var speakerImageUrl = string.IsNullOrWhiteSpace(speaker.ImageUrl) ? "/assets/images/speakers/blank_user.png" : speaker.ImageUrl;
+                        var speakerImageUrl = string.IsNullOrWhiteSpace(speaker.ImageUrl) 
+                            ? "/assets/images/speakers/blank_user.png" 
+                            : speaker.ImageUrl;　
                         await sw.WriteLineAsync($"          .scheduleTable_line");
                         await sw.WriteLineAsync($"            .scheduleTable_line_time ");
                         await sw.WriteLineAsync($"              | {sg.SessionStart.Date:yyyy-MM-dd}");
