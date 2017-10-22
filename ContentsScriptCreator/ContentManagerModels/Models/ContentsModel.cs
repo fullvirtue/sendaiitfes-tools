@@ -256,6 +256,8 @@ namespace ContentManagerModels.Models
             }
         }
 
+        private const int SpeakerCommingSoon = 990;
+
         /// <summary>
         /// 表示用のスピーカー名の生成を行います。
         /// </summary>
@@ -263,15 +265,25 @@ namespace ContentManagerModels.Models
         /// <returns></returns>
         private string GetSpeakerName(Speaker speaker)
         {
+            if (speaker.SpeakerId == SpeakerCommingSoon)
+            {
+                return speaker.SpeakerName;
+            }
+
             var speakerName = new StringBuilder();
 
-            speakerName.Append(string.IsNullOrEmpty(speaker.Organization) ? string.Empty : speaker.Organization);
-            speakerName.Append(string.IsNullOrEmpty(speaker.Organization2) ? string.Empty : speakerName.Length > 0 ? $" / {speaker.Organization2}" : speaker.Organization2);
-            speakerName.Append(string.IsNullOrEmpty(speaker.Title) ? string.Empty : speakerName.Length > 0 ? $" / {speaker.Title}" : speaker.Title);
-            speakerName.Append(string.IsNullOrEmpty(speaker.Title2) ? string.Empty : speakerName.Length > 0 ? $" / {speaker.Title2}" : speaker.Title2);
-            speakerName.Append(string.IsNullOrEmpty(speaker.SpeakerName) ? string.Empty : speakerName.Length > 0 ? $" {speaker.SpeakerName} 氏" :$"{speaker.SpeakerName} 氏" );
+            speakerName.Append($"{speaker.SpeakerName} 氏");
 
-            return speakerName.ToString();
+
+            var titleName = new StringBuilder();
+            titleName.Append(string.IsNullOrEmpty(speaker.MSMVPExpertise) ? string.Empty : $"Microsoft MVP for {speaker.MSMVPExpertise}");
+            titleName.Append(string.IsNullOrEmpty(speaker.AwardTitle)     ? string.Empty : titleName.Length > 0 ? $" {speaker.AwardTitle}" : speaker.AwardTitle);
+            titleName.Append(string.IsNullOrEmpty(speaker.Organization)   ? string.Empty : titleName.Length > 0 ? $" {speaker.Organization}" : speaker.Organization);
+            titleName.Append(string.IsNullOrEmpty(speaker.Organization2)  ? string.Empty : titleName.Length > 0 ? $" {speaker.Organization2}" : speaker.Organization2);
+            titleName.Append(string.IsNullOrEmpty(speaker.Title)          ? string.Empty : titleName.Length > 0 ? $" {speaker.Title}" : speaker.Title);
+            titleName.Append(string.IsNullOrEmpty(speaker.Title2)         ? string.Empty : titleName.Length > 0 ? $" {speaker.Title2}" : speaker.Title2);
+
+            return titleName.Length <= 0 ? $"{speaker.SpeakerName} 氏" : $"{speaker.SpeakerName} 氏<br/>{titleName}";
         }
 
 
