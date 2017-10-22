@@ -68,7 +68,7 @@ namespace ContentManagerModels.Models
                 var header = authorCount == 0 ? "author"
                            : authorCount == 1 ? "co_author"
                            : $"co_author{authorCount}";
-                authorText.AppendLine($"{header}: \"{author.Speaker.SpeakerName}\"");
+                authorText.AppendLine($"{header}: \"{author.Speaker.SpeakerName} 氏\"");
                 authorCount++;
             }
             return authorText.ToString();
@@ -273,9 +273,10 @@ namespace ContentManagerModels.Models
                     if (author.Order == 1)
                     {
                         // セッション情報へのリンク先                        
-                        var sessionLink = string.IsNullOrEmpty(sg.SessionNo3) 
-                            ? String.Empty 
-                            : $"../sessions/{sg.SessionStart.AddMonths(-1):yyyy/MM/dd}/session{sg.SessionNo}/";
+                        var sessionLink = 
+                              string.IsNullOrWhiteSpace(sg.DirectLink) == false ? sg.DirectLink
+                            : string.IsNullOrWhiteSpace(sg.SessionNo3) == false ? $"../sessions/{sg.SessionStart.AddMonths(-1):yyyy/MM/dd}/session{sg.SessionNo}/"
+                            : string.Empty;
                         // セッション情報のaタグ
                         var sessionUrlAnchorTag = string.IsNullOrEmpty(sessionLink)
                             ? "|"
