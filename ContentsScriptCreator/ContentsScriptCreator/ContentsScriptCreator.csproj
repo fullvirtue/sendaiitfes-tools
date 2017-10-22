@@ -64,6 +64,9 @@
     <None Include="CommonHeader.html.slim">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="footer.html.slim">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
