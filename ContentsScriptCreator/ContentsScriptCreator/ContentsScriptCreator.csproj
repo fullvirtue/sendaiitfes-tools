@@ -64,7 +64,7 @@
     <None Include="CommonHeader.html.slim">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="footer.html.slim">
+    <None Include="TimeTableFooter.html.slim">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Properties\Settings.settings">

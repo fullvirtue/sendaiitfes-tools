@@ -82,5 +82,17 @@ namespace ContentScriptCreator.Properties {
                 this["TimeTableHeaderFilename"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(".\\TimeTableFooter.html.slim")]
+        public string TimetableFooterFilePath {
+            get {
+                return ((string)(this["TimetableFooterFilePath"]));
+            }
+            set {
+                this["TimetableFooterFilePath"] = value;
+            }
+        }
     }
 }

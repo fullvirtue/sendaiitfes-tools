@@ -290,7 +290,7 @@ namespace ContentManagerModels.Models
                         await sw.WriteLineAsync($"              | {sg.SessionStart.Date:yyyy-MM-dd}");
                         await sw.WriteLineAsync($"              br/");
                         await sw.WriteLineAsync($"              | {sg.SessionStart:HH:mm} - {sg.SessionEnd:HH:mm}");
-                        await sw.WriteLineAsync($"              .scheduleTable_line_time_min {sessionTime.Minutes}min");
+                        await sw.WriteLineAsync($"              .scheduleTable_line_time_min {sessionTime.TotalMinutes}min");
                         await sw.WriteLineAsync($"            .scheduleTable_line_session");
                         await sw.WriteLineAsync($"              .scheduleTable_line_speakerIcon ");
                         await sw.WriteLineAsync($"                img src=\"../assets/images/speakers/blank_user.png\" data-echo=\"..{speakerImageUrl}\" width=\"100\" height=\"100\" alt=\"{speakerName}\"");

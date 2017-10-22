@@ -17,5 +17,8 @@
     <Setting Name="TimeTableHeaderFilename" Type="System.String" Scope="User">
       <Value Profile="(Default)">.\TimeTableHeader.html.slim</Value>
     </Setting>
+    <Setting Name="TimetableFooterFilePath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">.\TimeTableFooter.html.slim</Value>
+    </Setting>
   </Settings>
 </SettingsFile>
