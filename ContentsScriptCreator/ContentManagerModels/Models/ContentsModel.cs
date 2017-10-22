@@ -67,7 +67,7 @@ namespace ContentManagerModels.Models
             {
                 var header = authorCount == 0 ? "author"
                            : authorCount == 1 ? "co_author"
-                           : $"co_author{authorCount}";
+                           : $"co_author_{authorCount}";
                 authorText.AppendLine($"{header}: \"{author.Speaker.SpeakerName} 氏\"");
                 authorCount++;
             }
