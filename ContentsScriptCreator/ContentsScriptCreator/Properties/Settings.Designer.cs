@@ -37,7 +37,7 @@ namespace ContentScriptCreator.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D:\\Repos\\sendaiitfes2017\\source\\schedule\\index.html.slim")]
+        [global::System.Configuration.DefaultSettingValueAttribute("D:\\Repos\\sendaiitfes2017\\source\\schedule\\index.html.slim.new")]
         public string TimetablePath {
             get {
                 return ((string)(this["TimetablePath"]));
@@ -49,7 +49,7 @@ namespace ContentScriptCreator.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D:\\Repos\\sendaiitfes2017\\data\\speakers.yml")]
+        [global::System.Configuration.DefaultSettingValueAttribute("D:\\Repos\\sendaiitfes2017\\data\\speakers.yml.new")]
         public string SpeakerYml {
             get {
                 return ((string)(this["SpeakerYml"]));

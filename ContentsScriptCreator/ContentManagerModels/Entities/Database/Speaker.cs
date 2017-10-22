@@ -34,6 +34,8 @@ namespace ContentManagerModels.Entities.Database
         public string Link { get; set; }
         public string email { get; set; }
         public string MSMVPExpertise { get; set; }
+        public string AwardTitle { get; set; }
+        public string DirectLink { get; set; }
         public Nullable<int> Order { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
