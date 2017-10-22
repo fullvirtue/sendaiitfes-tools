@@ -171,6 +171,25 @@ namespace ContentManagerModels.Models
             await sw.WriteLineAsync($"    {header}: {body}");
         }
 
+        /// <summary>
+        /// Speakerの主要セッションを取得します。
+        /// </summary>
+        /// <remarks>主要なセッションの定義はスピーカーの一番最初のセッション</remarks>
+        /// <param name="speaker"></param>
+        /// <returns></returns>
+        private async Task<Session> GetPrimarySessionBySpeakerTask(Speaker speaker)
+        {
+            using (var dbx = new ContentsDbEntities())
+            {
+                var session = await dbx.Session
+                    .Where(s => s.Author.Any(a => a.SpeakerId == speaker.SpeakerId) && string.IsNullOrEmpty(s.SessionNo3) == false)
+                    .OrderBy(s => s.SessionStart)
+                    .FirstOrDefaultAsync();
+
+                return session;
+            }
+        }
+
         private async Task WriteSpeakersAsync(string path, Speaker[] speakers)
         {
             using (var fs = new FileStream(path, FileMode.Create))
@@ -192,6 +211,13 @@ namespace ContentManagerModels.Models
                     await WriteSpeakerInfoAsync(sw, "link", speaker.Link);
                     await WriteSpeakerInfoAsync(sw, "microsoftmvpcategoly", speaker.MSMVPExpertise);
                     await WriteSpeakerInfoAsync(sw, "awardtitle", speaker.AwardTitle);
+
+                    var primarySession = await GetPrimarySessionBySpeakerTask(speaker);
+                    if (primarySession != null)
+                    {
+                        var sessionDate = primarySession.SessionStart;
+                        await WriteSpeakerInfoAsync(sw, "primarysessionlink", $"http://2017.sendaiitfes.org/sessions/{sessionDate.Year}/{sessionDate.AddMonths(-1).Month:D2}/{sessionDate.Day:D2}/session{primarySession.SessionNo}/");
+                    }
                 }
             }
         }
