@@ -191,6 +191,7 @@ namespace ContentManagerModels.Models
                     await WriteSpeakerInfoAsync(sw, "github", speaker.Github);
                     await WriteSpeakerInfoAsync(sw, "link", speaker.Link);
                     await WriteSpeakerInfoAsync(sw, "microsoftmvpcategoly", speaker.MSMVPExpertise);
+                    await WriteSpeakerInfoAsync(sw, "awardtitle", speaker.AwardTitle);
                 }
             }
         }
@@ -242,7 +243,7 @@ namespace ContentManagerModels.Models
             speakerName.Append(string.IsNullOrEmpty(speaker.Organization2) ? string.Empty : speakerName.Length > 0 ? $" / {speaker.Organization2}" : speaker.Organization2);
             speakerName.Append(string.IsNullOrEmpty(speaker.Title) ? string.Empty : speakerName.Length > 0 ? $" / {speaker.Title}" : speaker.Title);
             speakerName.Append(string.IsNullOrEmpty(speaker.Title2) ? string.Empty : speakerName.Length > 0 ? $" / {speaker.Title2}" : speaker.Title2);
-            speakerName.Append(string.IsNullOrEmpty(speaker.SpeakerName) ? string.Empty : speakerName.Length > 0 ? $" {speaker.SpeakerName}" : speaker.SpeakerName);
+            speakerName.Append(string.IsNullOrEmpty(speaker.SpeakerName) ? string.Empty : speakerName.Length > 0 ? $" {speaker.SpeakerName} 氏" :$"{speaker.SpeakerName} 氏" );
 
             return speakerName.ToString();
         }
@@ -292,7 +293,7 @@ namespace ContentManagerModels.Models
                         await sw.WriteLineAsync($"              .scheduleTable_line_time_min {sessionTime.Minutes}min");
                         await sw.WriteLineAsync($"            .scheduleTable_line_session");
                         await sw.WriteLineAsync($"              .scheduleTable_line_speakerIcon ");
-                        await sw.WriteLineAsync($"                img src=\"..{speakerImageUrl}\" width=\"100\" height=\"100\" alt=\"{speakerName}\"");
+                        await sw.WriteLineAsync($"                img src=\"../assets/images/speakers/blank_user.png\" data-echo=\"..{speakerImageUrl}\" width=\"100\" height=\"100\" alt=\"{speakerName}\"");
                         await sw.WriteLineAsync($"              .scheduleTable_line_descriptions");
                         await sw.WriteLineAsync($"                .scheduleTable_line_title ");
                         await sw.WriteLineAsync($"                  {sessionUrlAnchorTag}{sg.Title}");
@@ -304,7 +305,7 @@ namespace ContentManagerModels.Models
                         await sw.WriteLineAsync($"            .scheduleTable_line_time ");
                         await sw.WriteLineAsync($"            .scheduleTable_line_session");
                         await sw.WriteLineAsync($"              .scheduleTable_line_speakerIcon ");
-                        await sw.WriteLineAsync($"                img src=\"..{speaker.ImageUrl}\" width=\"100\" height=\"100\" alt=\"{speakerName}\"");
+                        await sw.WriteLineAsync($"                img src=\"../assets/images/speakers/blank_user.png\" data-echo=\"..{speaker.ImageUrl}\" width=\"100\" height=\"100\" alt=\"{speakerName}\"");
                         await sw.WriteLineAsync($"              .scheduleTable_line_descriptions");
                         await sw.WriteLineAsync($"                .scheduleTable_line_speaker {speakerName}");
                     }
@@ -323,11 +324,12 @@ namespace ContentManagerModels.Models
         /// <param name="timetableHeaderFilePath"></param>
         /// <returns></returns>
         public async Task<bool> CreateTimetableAsync(string timetablePath, string commonHeaderFilePath,
-            string timetableHeaderFilePath)
+            string timetableHeaderFilePath, string footerPath)
         {
             var sessionGroups = await GetTimetableSessionInfos();
             var commonHeader = File.ReadAllText(commonHeaderFilePath, utf8Encoding);
-            var timeTableHeader = File.ReadAllText(timetableHeaderFilePath);
+            var timeTableHeader = File.ReadAllText(timetableHeaderFilePath, utf8Encoding);
+            var footer = File.ReadAllText(footerPath, utf8Encoding);
 
             using (var fs = new FileStream(timetablePath, FileMode.Create))
             using (var sw = new StreamWriter(fs, utf8Encoding))
@@ -345,6 +347,7 @@ namespace ContentManagerModels.Models
                 {
                     await WriteTimetableBodyAsync(sw, sessionGroup);
                 }
+                await sw.WriteLineAsync(footer + "");
                 await sw.FlushAsync();
             }
             
