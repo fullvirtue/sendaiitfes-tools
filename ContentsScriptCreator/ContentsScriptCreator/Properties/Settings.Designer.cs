@@ -25,7 +25,7 @@ namespace ContentScriptCreator.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D:\\Repos\\sendaiitfes2017\\source\\sessions\\items")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Repos\\sendaiitfes2017\\source\\sessions\\items")]
         public string SessionInfoPath {
             get {
                 return ((string)(this["SessionInfoPath"]));
@@ -37,7 +37,7 @@ namespace ContentScriptCreator.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D:\\Repos\\sendaiitfes2017\\source\\schedule\\index.html.slim.new")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Repos\\sendaiitfes2017\\source\\schedule\\index.html.slim")]
         public string TimetablePath {
             get {
                 return ((string)(this["TimetablePath"]));
@@ -49,7 +49,7 @@ namespace ContentScriptCreator.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("D:\\Repos\\sendaiitfes2017\\data\\speakers.yml.new")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C:\\Repos\\sendaiitfes2017\\data\\speakers.yml")]
         public string SpeakerYml {
             get {
                 return ((string)(this["SpeakerYml"]));
@@ -92,6 +92,18 @@ namespace ContentScriptCreator.Properties {
             }
             set {
                 this["TimetableFooterFilePath"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool IsFooterVisible {
+            get {
+                return ((bool)(this["IsFooterVisible"]));
+            }
+            set {
+                this["IsFooterVisible"] = value;
             }
         }
     }

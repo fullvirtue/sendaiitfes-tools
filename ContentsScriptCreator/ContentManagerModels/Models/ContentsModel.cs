@@ -362,7 +362,7 @@ namespace ContentManagerModels.Models
         /// <param name="timetableHeaderFilePath"></param>
         /// <returns></returns>
         public async Task<bool> CreateTimetableAsync(string timetablePath, string commonHeaderFilePath,
-            string timetableHeaderFilePath, string footerPath)
+            string timetableHeaderFilePath, string footerPath, bool isFooterVisible)
         {
             var sessionGroups = await GetTimetableSessionInfos();
             var commonHeader = File.ReadAllText(commonHeaderFilePath, utf8Encoding);
@@ -385,7 +385,10 @@ namespace ContentManagerModels.Models
                 {
                     await WriteTimetableBodyAsync(sw, sessionGroup);
                 }
-                await sw.WriteLineAsync(footer + "");
+                if (isFooterVisible)
+                {
+                    await sw.WriteLineAsync(footer + "");
+                }
                 await sw.FlushAsync();
             }
             

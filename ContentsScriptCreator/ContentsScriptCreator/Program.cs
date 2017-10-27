@@ -19,7 +19,8 @@ namespace ContentScriptCreator
                 Settings.Default.TimetablePath, 
                 Settings.Default.TimeTableCommonHeaderFilename, 
                 Settings.Default.TimeTableHeaderFilename, 
-                Settings.Default.TimetableFooterFilePath).Result ? "成功" : "失敗");
+                Settings.Default.TimetableFooterFilePath,
+                Settings.Default.IsFooterVisible).Result ? "成功" : "失敗");
         }
     }
 }
